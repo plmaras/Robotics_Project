@@ -15,9 +15,15 @@ from delta_robot.params import (
 )
 
 
-def elbow_pos(params: DeltaParams, leg_index: int, theta: float) -> np.ndarray:
+def elbow_pos(
+    params: DeltaParams,
+    leg_index: int,
+    theta: float,
+    leg_angles: np.ndarray | None = None,
+) -> np.ndarray:
     """Position of the elbow joint for leg i given joint angle theta [rad]."""
-    r = leg_radial_vector(leg_index)
+    phi = LEG_ANGLES[leg_index] if leg_angles is None else leg_angles[leg_index]
+    r = np.array([np.cos(phi), np.sin(phi), 0.0])
     rad_dist = params.base_radius + params.upper_arm * np.cos(theta)
     return np.array([
         r[0] * rad_dist,
@@ -36,21 +42,40 @@ def elbow_derivative(params: DeltaParams, leg_index: int, theta: float) -> np.nd
     ], dtype=np.float64)
 
 
-def effector_joint_pos(params: DeltaParams, leg_index: int, pos: np.ndarray) -> np.ndarray:
+def effector_joint_pos(
+    params: DeltaParams,
+    leg_index: int,
+    pos: np.ndarray,
+    leg_angles: np.ndarray | None = None,
+) -> np.ndarray:
     """Lower arm attachment point on the effector for leg i given effector position."""
-    return np.asarray(pos, dtype=np.float64) + leg_radial_vector(leg_index) * params.effector_radius
+    phi = LEG_ANGLES[leg_index] if leg_angles is None else leg_angles[leg_index]
+    radial = np.array([np.cos(phi), np.sin(phi), 0.0])
+    return np.asarray(pos, dtype=np.float64) + radial * params.effector_radius
 
 
-def lower_arm_tilt(params: DeltaParams, leg_index: int, theta: float, pos: np.ndarray) -> float:
+def lower_arm_tilt(
+    params: DeltaParams,
+    leg_index: int,
+    theta: float,
+    pos: np.ndarray,
+    leg_angles: np.ndarray | None = None,
+) -> float:
     """Out-of-plane angle of the lower arm rod (for ball joint angle limits)."""
-    rod = effector_joint_pos(params, leg_index, pos) - elbow_pos(params, leg_index, theta)
-    axis = leg_tangential_axis(leg_index)
+    phi = LEG_ANGLES[leg_index] if leg_angles is None else leg_angles[leg_index]
+    rod = effector_joint_pos(params, leg_index, pos, leg_angles) - elbow_pos(
+        params, leg_index, theta, leg_angles
+    )
+    axis = np.array([np.sin(phi), -np.cos(phi), 0.0])
     sin_tilt = np.clip(np.abs(np.dot(rod, axis)) / params.lower_arm, -1.0, 1.0)
     return float(np.arcsin(sin_tilt))
 
 
 def inverse_kinematics(
-    pos: np.ndarray, params: DeltaParams, margin: float = 0.0
+    pos: np.ndarray,
+    params: DeltaParams,
+    margin: float = 0.0,
+    leg_angles: np.ndarray | None = None,
 ) -> Tuple[Optional[np.ndarray], bool, str]:
     """Analytical closed-form Inverse Kinematics: effector position -> joint angles.
 
@@ -58,15 +83,19 @@ def inverse_kinematics(
         pos: 3D coordinates [x, y, z] of the end-effector.
         params: DeltaParams geometry specification.
         margin: Optional angular safety margin [rad].
+        leg_angles: Optional azimuth angles for each leg [rad].
 
     Returns:
         (thetas, success, reason): thetas is array of 3 angles [rad] if successful.
     """
     pos = np.asarray(pos, dtype=np.float64)
+    angles = LEG_ANGLES if leg_angles is None else np.asarray(leg_angles, dtype=np.float64)
+    if angles.shape != (3,):
+        raise ValueError(f"leg_angles must contain 3 angles, got shape {angles.shape}")
     thetas = []
 
     for i in range(3):
-        phi = LEG_ANGLES[i]
+        phi = angles[i]
         # Rotate target into leg frame (where leg lies along +x axis)
         c, s = np.cos(-phi), np.sin(-phi)
         a = c * pos[0] - s * pos[1] + params.effector_radius - params.base_radius
@@ -94,7 +123,7 @@ def inverse_kinematics(
             return None, False, f"joint_limit_violation_leg_{i}"
 
         # Ball joint tilt check
-        tilt = lower_arm_tilt(params, i, theta, pos)
+        tilt = lower_arm_tilt(params, i, theta, pos, angles)
         if tilt > (params.ball_joint_max - margin):
             return None, False, f"ball_joint_limit_leg_{i}"
 

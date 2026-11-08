@@ -23,6 +23,25 @@ class TestKinematics(unittest.TestCase):
             err = np.linalg.norm(pt - recovered_pt)
             self.assertLess(err, 1e-6, f"FK/IK error {err} exceeded tolerance")
 
+    def test_inverse_kinematics_supports_configured_leg_angles(self):
+        point = np.array([0.08, -0.05, -0.60])
+        theta, ok, reason = dr.inverse_kinematics(point, self.params)
+        self.assertTrue(ok, reason)
+
+        rotation = np.radians(10.0)
+        c, s = np.cos(rotation), np.sin(rotation)
+        rotated_point = np.array([
+            c * point[0] - s * point[1],
+            s * point[0] + c * point[1],
+            point[2],
+        ])
+        custom_angles = np.radians([10.0, 130.0, 250.0])
+        custom_theta, custom_ok, custom_reason = dr.inverse_kinematics(
+            rotated_point, self.params, leg_angles=custom_angles
+        )
+        self.assertTrue(custom_ok, custom_reason)
+        np.testing.assert_allclose(custom_theta, theta, atol=1e-12)
+
     def test_jacobian_analytical_vs_numerical(self):
         home_p, home_th = dr.home_position(self.params)
         J_ana = dr.jacobian(home_th, home_p, self.params)

@@ -9,6 +9,7 @@ Validates:
 """
 
 from typing import Dict, Any
+import argparse
 import numpy as np
 import mujoco
 
@@ -127,5 +128,10 @@ def run_verification() -> Dict[str, Any]:
     }
 
 
-if __name__ == "__main__":
+def main(argv: list[str] | None = None) -> None:
+    argparse.ArgumentParser(description=__doc__).parse_args(argv)
     run_verification()
+
+
+if __name__ == "__main__":
+    main()

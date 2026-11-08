@@ -7,24 +7,25 @@ from datetime import datetime
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
-sys.path.insert(0, str(ROOT / "src"))
+PROJECT_ROOT = ROOT.parent
+sys.path.insert(0, str(PROJECT_ROOT))
 
 import mujoco
-from delta_pick.config import load_runtime_config
-from delta_pick.scene import augment_scene
-from delta_pick.simulation import MultiPickSimulation
-from delta_pick.visualization import launch_interactive
+from delta_robot.pick.config import load_runtime_config
+from delta_robot.pick.scene import augment_scene
+from delta_robot.pick.simulation import MultiPickSimulation
+from delta_robot.pick.visualization import launch_interactive
 
 
-def main() -> None:
+def main(argv: list[str] | None = None) -> None:
     parser = argparse.ArgumentParser(description="Continuous multi-object delta robot pick-and-place")
-    parser.add_argument("--config", default=str(ROOT / "runtime_config.json"))
+    parser.add_argument("--config", default=str(PROJECT_ROOT / "config" / "pick_place.json"))
     parser.add_argument("--duration", type=float, default=None, help="simulation seconds")
     parser.add_argument("--headless", action="store_true", help="run without the interactive viewer")
     parser.add_argument("--no-build-scene", action="store_true", help="reuse the already augmented MJCF")
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
 
-    runtime, project_root = load_runtime_config(args.config)
+    runtime, _ = load_runtime_config(args.config)
     cad_cfg_path = runtime["cad_config"]
     source_scene = runtime["scene_xml"]
     output_scene = runtime["output_scene_xml"]

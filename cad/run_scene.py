@@ -149,7 +149,7 @@ def run_viewer(
                 time.sleep(behind)
 
 
-def main() -> None:
+def main(argv: list[str] | None = None) -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
         "--scene",
@@ -162,7 +162,7 @@ def main() -> None:
     parser.add_argument("--viewer", action="store_true", help="open the MuJoCo viewer")
     parser.add_argument("--seconds", type=float, default=2.0)
     parser.add_argument("--speed", type=float, default=None)
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
 
     config = json.loads(args.config.read_text())
     speed = args.speed if args.speed is not None else config["conveyor"]["belt_speed_m_s"]

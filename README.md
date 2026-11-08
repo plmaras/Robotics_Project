@@ -1,30 +1,30 @@
 # Delta Robot Simulation
 
-One repository for the delta robot's CAD assets, analytical robot modules,
-MuJoCo models, continuous conveyor pick-and-place demo, and benchmark scripts.
+One Python package for analytical delta-robot control and the CAD-backed
+multi-object pick-and-place simulation. A unified command line exposes the
+benchmark, verification, CAD-scene, and pick-and-place workflows; the CAD
+build and viewer scripts also remain directly runnable.
 
-## Repository map
+## Repository layout
 
 ```text
-cad/                         CAD config and exported STEP/STL/MJCF robot assets
-delta_robot/                 Kinematics, dynamics, motion planning, control, estimation
-delta_multi_pick_system/     Continuous CAD robot pick-and-place application
-  src/delta_pick/             Scheduler, tracking, controller, scene, visualization
-  tests/                      Pick application tests
-docs/                        Design document
-results/                     Benchmark plots
-run_pick_place.py             Root entry point for the visual pick demo
-run_demo.py                   Analytical robot benchmark/demo entry point
-verify_mujoco.py              Core model verification routines
-experiments.py                PD/CTC benchmark experiments
-tests.py                      Core robot module tests
+cad/                         CAD configuration, MJCF generation, and scene viewer
+  out/                       Generated MJCF, mesh exports, and frame metadata
+config/pick_place.json       Pick-and-place runtime configuration
+delta_robot/                 Shared kinematics, dynamics, planning, and control
+  pick/                      CAD-backed pick-and-place application
+scripts/                     Benchmark, verification, and pick launchers
+tests/                       Robot and pick-and-place tests
+docs/                        Design and application notes
+results/                     Benchmark plots and pick simulation logs
 ```
 
-The CAD pipeline creates MuJoCo MJCF directly. This checkout has STEP and STL
-CAD assets, but no URDF. The pick application uses the CAD-derived MJCF scene
-and the `delta_robot` package holds reusable analytical robot functions.
+The CAD pipeline generates MuJoCo MJCF directly. The checked-in `cad/out/`
+assets include STEP/STL exports and the base scene. The analytical benchmark
+uses its own compact MuJoCo model; the multi-pick application and CAD scene
+viewer use the CAD-generated scene.
 
-## Set up one Python environment
+## Setup
 
 From the repository root:
 
@@ -35,62 +35,59 @@ python -m pip install --upgrade pip
 python -m pip install -r requirements.txt
 ```
 
-The CAD meshes, manifest, and base MJCF scene are included in `cad/out/`.
-Regenerate the MuJoCo scene after changing the config or manifest:
+Regenerate the CAD scene after changing the CAD configuration or manifest:
 
 ```bash
 python cad/build_mjcf.py
 ```
 
-`cad/build_cad.py` remains as a compatibility alias for the same scene builder.
+`cad/build_cad.py` remains as a compatibility alias for the scene builder.
 
-## Run the continuous pick-and-place visualization
+## Unified command line
 
-On macOS, MuJoCo's passive viewer needs its `mjpython` launcher. In the
-environment above, run:
-
-```bash
-.venv/bin/mjpython run_pick_place.py --duration 30
-```
-
-On Linux or Windows:
+Run commands from the repository root:
 
 ```bash
-python run_pick_place.py --duration 30
+python -m delta_robot --help
+python -m delta_robot verify
+python -m delta_robot benchmark --trials 5
+python -m delta_robot benchmark --visualize
+python -m delta_robot pick --headless --duration 30
 ```
 
-Omit `--duration 30` to use the configured 90-second run. In the viewer, press
-`A` to toggle frame axes, `L` to toggle frame labels, and `R` to cycle the
-coordinate readout between world and robot-base frames. The robot shows one
-frame at each arm's elbow joint, where the upper arm meets its forearm links.
-
-To produce evaluation logs without opening a viewer:
+The pick-and-place viewer is enabled by default. On macOS, launch it with
+MuJoCo's Python viewer launcher:
 
 ```bash
-python run_pick_place.py --headless --duration 30
+.venv/bin/mjpython -m delta_robot pick --duration 30
 ```
 
-Runs write a JSON summary and CSV event/telemetry logs under
-`delta_multi_pick_system/runs/`. The runtime builds
-`cad/out/scene_multi_pick.xml`; it keeps the base `cad/out/scene.xml` intact.
+Omit `--duration` to use the configured 90-second run. Pick runs write
+summaries and CSV logs under `results/pick_place/runs/`. The runtime generates
+`cad/out/scene_multi_pick.xml` and leaves the base `cad/out/scene.xml` intact.
 
-## Other robot demos
+## CAD scene tools
 
-The root `delta_robot/` package includes analytical forward/inverse kinematics,
-dynamics, trajectory generation, RRT obstacle planning, state estimation, and
-controllers. `run_demo.py` runs the core verification and controller
-benchmarks. Its `--visualize` option opens its standalone MuJoCo demonstration;
-on macOS, use `.venv/bin/mjpython run_demo.py --visualize`.
+CAD commands can also be run directly, without the unified CLI:
 
-## Pick-and-place behavior
+```bash
+python cad/run_scene.py                   # headless conveyor check
+python cad/run_scene.py --viewer           # interactive viewer
+python -m delta_robot cad-scene --viewer   # same viewer via unified CLI
+```
 
-The scheduler chooses a reachable conveyor object with enough predicted time
-for interception and placement. The controller follows approach, moving-target
-intercept, descent, lift, bin transfer, release, and return waypoints. Objects
-that are not selected in time keep moving and may be missed. Grasping is
-represented by a MuJoCo weld constraint attached to the visible CAD gripper.
-It is a stable suction-style simulation grasp, not a detailed finger-contact
-model.
+On macOS, use `.venv/bin/mjpython` instead of `python` for either interactive
+viewer command.
 
-Tune object flow, belt speed, lanes, bin position, joint gains, and scheduling
-limits in `delta_multi_pick_system/runtime_config.json`.
+## Capabilities
+
+- Analytical forward/inverse kinematics, dynamics, trajectory generation,
+  obstacle planning, state estimation, and PD/computed-torque controllers.
+- Verification against MuJoCo and repeatable benchmark experiments.
+- CAD-backed continuous multi-object conveyor picking, with tracking,
+  scheduling, suction-style weld grasping, and evaluation logs.
+- Interactive visualization for the analytical demo, CAD scene, and
+  multi-object pick simulation.
+
+See [the pick-and-place notes](docs/multi_pick.md) and
+[the design document](docs/DesignDocument.pdf) for additional details.

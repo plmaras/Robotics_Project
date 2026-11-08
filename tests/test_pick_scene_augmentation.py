@@ -5,8 +5,8 @@ from pathlib import Path
 import sys
 
 ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / "src"))
-from delta_pick.scene import augment_scene
+sys.path.insert(0, str(ROOT))
+from delta_robot.pick.scene import augment_scene
 
 
 class SceneAugmentationTest(unittest.TestCase):

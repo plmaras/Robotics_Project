@@ -45,6 +45,6 @@
     "duration_s": 90.0,
     "realtime_factor": 1.0,
     "log_interval_s": 0.25,
-    "output_dir": "runs"
+    "output_dir": "../results/pick_place/runs"
   }
 }

@@ -17,6 +17,8 @@ __pycache__/
 # Generated pick-and-place scene and run logs. Keep the source CAD scene,
 # manifest, STEP files, and STL meshes in cad/out/ so a clone can visualize.
 cad/out/scene_multi_pick.xml
+results/pick_place/runs/
+delta_multi_pick_system/MUJOCO_LOG.TXT
 delta_multi_pick_system/runs/
 
 # Local plotting cache

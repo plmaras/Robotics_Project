@@ -4,9 +4,9 @@ from pathlib import Path
 import numpy as np
 
 ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / "src"))
-from delta_pick.scheduler import OptimizedScheduler
-from delta_pick.object_pool import TrackedObject
+sys.path.insert(0, str(ROOT))
+from delta_robot.pick.scheduler import OptimizedScheduler
+from delta_robot.pick.object_pool import TrackedObject
 
 
 class FakePool:

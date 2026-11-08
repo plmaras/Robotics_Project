@@ -10,8 +10,14 @@ Executes:
 import argparse
 import sys
 import os
-from verify_mujoco import run_verification
-from experiments import run_experiment_suite, plot_experiment_comparisons, print_results_summary_table
+from pathlib import Path
+
+from scripts.verify_mujoco import run_verification
+from scripts.experiments import (
+    plot_experiment_comparisons,
+    print_results_summary_table,
+    run_experiment_suite,
+)
 import delta_robot as dr
 
 
@@ -103,12 +109,12 @@ def run_interactive_visualization():
         print(f"Interactive viewer session ended: {e}")
 
 
-def main():
+def main(argv: list[str] | None = None):
     parser = argparse.ArgumentParser(description="3-DOF Delta Robot Benchmark Suite")
     parser.add_argument("--verify-only", action="store_true", help="Run only NumPy vs MuJoCo verification checks")
     parser.add_argument("--trials", type=int, default=5, help="Number of trials per experiment (default: 5)")
     parser.add_argument("--visualize", action="store_true", help="Launch interactive 3D MuJoCo viewer")
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
 
     # Always run verification first
     verification_results = run_verification()
@@ -118,7 +124,8 @@ def main():
 
     # Run Benchmark Experiments
     benchmark_results = run_experiment_suite(num_trials=args.trials)
-    plot_experiment_comparisons(benchmark_results, output_dir="results")
+    results_dir = Path(__file__).resolve().parents[1] / "results"
+    plot_experiment_comparisons(benchmark_results, output_dir=str(results_dir))
     print_results_summary_table(benchmark_results)
 
     if args.visualize:

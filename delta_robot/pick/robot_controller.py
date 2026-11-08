@@ -4,6 +4,9 @@ from typing import Any
 
 import numpy as np
 
+from delta_robot.kinematics import inverse_kinematics
+from delta_robot.params import DeltaParams
+
 
 class DeltaIKTorqueController:
     """Track Cartesian targets through delta IK and joint-space torque control.
@@ -25,13 +28,16 @@ class DeltaIKTorqueController:
         self.qpos_ids = [int(model.jnt_qposadr[j]) for j in self.joint_ids]
         self.actuator_ids = [model.actuator(n).id for n in cfg["actuator_names"]]
         delta = cad_config["delta"]
-        self.base_radius = float(delta["base_radius"]) / 1000.0
-        self.effector_radius = float(delta["effector_radius"]) / 1000.0
-        self.upper_arm = float(delta["upper_arm_length"]) / 1000.0
-        self.lower_arm = float(delta["forearm_length"]) / 1000.0
+        self.params = DeltaParams(
+            base_radius=float(delta["base_radius"]) / 1000.0,
+            effector_radius=float(delta["effector_radius"]) / 1000.0,
+            upper_arm=float(delta["upper_arm_length"]) / 1000.0,
+            lower_arm=float(delta["forearm_length"]) / 1000.0,
+            theta_min=np.radians(float(delta["theta_min_deg"])),
+            theta_max=np.radians(float(delta["theta_max_deg"])),
+            ball_joint_max=np.pi / 2.0,
+        )
         self.leg_angles = np.radians(np.asarray(delta["leg_angles_deg"], dtype=float))
-        self.theta_min = np.radians(float(delta["theta_min_deg"]))
-        self.theta_max = np.radians(float(delta["theta_max_deg"]))
         self.kp = float(cfg.get("joint_position_gain", 120.0))
         self.kd = float(cfg.get("joint_velocity_gain", 12.0))
         self.max_torque = float(cfg["max_torque_nm"])
@@ -41,34 +47,21 @@ class DeltaIKTorqueController:
     def position(self) -> np.ndarray:
         return self.data.site_xpos[self.site_id].copy()
 
-    def _inverse_kinematics(self, effector_target: np.ndarray) -> np.ndarray | None:
-        x, y, z = map(float, effector_target)
-        angles = []
-        for phi in self.leg_angles:
-            c, s = np.cos(phi), np.sin(phi)
-            # Rotate the target into the leg plane and account for the two radii.
-            a = c * x + s * y + self.effector_radius - self.base_radius
-            b = -s * x + c * y
-            A = 2.0 * a * self.upper_arm
-            B = 2.0 * z * self.upper_arm
-            C = (a*a + b*b + z*z + self.upper_arm**2 - self.lower_arm**2)
-            radius = float(np.hypot(A, B))
-            if radius < 1e-12 or abs(C / radius) > 1.0 + 1e-9:
-                return None
-            theta = np.arctan2(B, A) + np.arccos(np.clip(C / radius, -1.0, 1.0))
-            theta = (theta + np.pi) % (2.0 * np.pi) - np.pi
-            if theta < self.theta_min or theta > self.theta_max:
-                return None
-            angles.append(theta)
-        return np.asarray(angles)
+    def _inverse_kinematics(
+        self, effector_target: np.ndarray
+    ) -> tuple[np.ndarray | None, str]:
+        angles, reachable, reason = inverse_kinematics(
+            effector_target, self.params, leg_angles=self.leg_angles
+        )
+        return (angles, "ok") if reachable else (None, reason)
 
     def command(self, target: np.ndarray) -> None:
         # Convert the requested TCP position to the effector-centre frame.
         tcp_offset = self.data.site_xpos[self.site_id] - self.data.site_xpos[self.effector_site_id]
         effector_target = np.asarray(target, dtype=float) - tcp_offset
-        desired = self._inverse_kinematics(effector_target)
+        desired, reason = self._inverse_kinematics(effector_target)
         current = self.data.qpos[self.qpos_ids]
-        self.last_ik_error = None if desired is not None else "unreachable_or_joint_limit"
+        self.last_ik_error = None if desired is not None else reason
         if desired is None:
             # Hold the current pose if a scheduler target falls outside the IK workspace.
             desired = current.copy()
