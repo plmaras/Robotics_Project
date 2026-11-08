@@ -1,6 +1,3 @@
-"""Unit Test Suite for 3-DOF Delta Robot Python Simulation.
-"""
-
 import unittest
 import numpy as np
 

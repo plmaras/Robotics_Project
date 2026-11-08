@@ -1,0 +1,5 @@
+# Shared dependencies for CAD generation, the MuJoCo demos, and benchmarks.
+mujoco>=3.2.0
+numpy>=1.26
+scipy>=1.10
+matplotlib>=3.7

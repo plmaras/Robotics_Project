@@ -1,0 +1,50 @@
+{
+  "cad_config": "../cad/config.json",
+  "scene_xml": "../cad/out/scene.xml",
+  "output_scene_xml": "../cad/out/scene_multi_pick.xml",
+  "pool_size": 180,
+  "spawn_interval_s": 0.85,
+  "belt_speed_m_s": 0.16,
+  "lane_positions_m": [-0.055, 0.0, 0.055],
+  "spawn_margin_m": 0.07,
+  "exit_margin_m": 0.07,
+  "object": {
+    "radius_m": 0.017,
+    "height_m": 0.034,
+    "mass_kg": 0.055,
+    "friction": [0.8, 0.01, 0.001]
+  },
+  "bin": {
+    "position_xy_m": [0.0, 0.285],
+    "inner_half_size_m": [0.105, 0.075],
+    "wall_height_m": 0.12,
+    "wall_thickness_m": 0.012
+  },
+  "controller": {
+    "site_name": "tool_tcp",
+    "gripper_body_name": "gripper",
+    "joint_names": ["joint_0", "joint_1", "joint_2"],
+    "actuator_names": ["motor_0", "motor_1", "motor_2"],
+    "approach_height_m": 0.085,
+    "pick_clearance_m": 0.006,
+    "lift_height_m": 0.13,
+    "max_cartesian_speed_m_s": 0.65,
+    "joint_position_gain": 120.0,
+    "joint_velocity_gain": 12.0,
+    "max_torque_nm": 18.0,
+    "grasp_distance_m": 0.035,
+    "phase_timeout_s": 2.5,
+    "settle_time_s": 0.12
+  },
+  "scheduler": {
+    "max_pick_radius_m": 0.32,
+    "safety_time_s": 0.20,
+    "prediction_horizon_s": 0.25
+  },
+  "simulation": {
+    "duration_s": 90.0,
+    "realtime_factor": 1.0,
+    "log_interval_s": 0.25,
+    "output_dir": "runs"
+  }
+}

@@ -10,7 +10,6 @@ Executes:
 import argparse
 import sys
 import os
-
 from verify_mujoco import run_verification
 from experiments import run_experiment_suite, plot_experiment_comparisons, print_results_summary_table
 import delta_robot as dr
@@ -28,7 +27,14 @@ def run_interactive_visualization():
 
     print("\nLaunching interactive MuJoCo viewer (Press ESC to close)...")
     params = dr.DeltaParams()
-    env = dr.DeltaMuJoCoEnv(params=params, with_obstacle=True)
+    obs_pos = (-0.08, 0.0, -0.63)
+    obs_radius = 0.03
+    env = dr.DeltaMuJoCoEnv(
+        params=params,
+        with_obstacle=True,
+        obstacle_pos=obs_pos,
+        obstacle_radius=obs_radius,
+    )
     home_p, home_th = dr.home_position(params)
     env.reset(home_th)
 
@@ -52,9 +58,11 @@ def run_interactive_visualization():
     travel_duration = t_intercept - sim_time
     target_vel_contact = np.array([v_belt, 0.0, 0.0])
 
-    obstacle = dr.SphereObstacle(center=np.array([0.04, 0.0, -0.58]), radius=0.04, margin=0.02)
+    obstacle = dr.SphereObstacle(center=np.array(obs_pos), radius=obs_radius, margin=0.015)
     rrt_planner = dr.RRTPlanner3D(params=params, obstacles=[obstacle])
     waypoints = rrt_planner.plan(home_p, p_intercept)
+    if waypoints is None:
+        waypoints = [home_p, home_p + np.array([0.0, -0.08, 0.0]), p_intercept]
     traj = dr.build_obstacle_avoidance_trajectory(waypoints, v_final=target_vel_contact, total_time=travel_duration)
 
     sim_time = 0.0

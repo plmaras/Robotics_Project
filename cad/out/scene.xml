@@ -1,0 +1,292 @@
+<mujoco model="delta_cad_conveyor">
+  <compiler angle="radian" meshdir="stl" autolimits="true"/>
+  <option gravity="0 0 -9.810000"
+          timestep="0.002000"
+          integrator="implicitfast">
+    <flag equality="enable"/>
+  </option>
+  <default>
+    <default class="frame">
+      <site type="sphere" size="0.006" rgba="1 1 1 1" group="2"/>
+    </default>
+    <default class="visual">
+      <geom contype="0" conaffinity="0" group="1"/>
+    </default>
+    <default class="collision">
+      <geom group="3" rgba="1 0.62 0.1 0.25"/>
+    </default>
+  </default>
+  <visual>
+    <global azimuth="120" elevation="-20" offwidth="1280" offheight="800"/>
+    <quality shadowsize="4096"/>
+    <headlight diffuse="0.65 0.65 0.65" ambient="0.28 0.28 0.30" specular="0.25 0.25 0.25"/>
+    <scale framelength="0.6" framewidth="0.02"/>
+  </visual>
+  <asset>
+    <mesh name="base" file="base.stl" scale="0.001 0.001 0.001"/>
+    <mesh name="motor" file="motor.stl" scale="0.001 0.001 0.001"/>
+    <mesh name="motor_mount" file="motor_mount.stl" scale="0.001 0.001 0.001"/>
+    <mesh name="upper_arm" file="upper_arm.stl" scale="0.001 0.001 0.001"/>
+    <mesh name="forearm" file="forearm.stl" scale="0.001 0.001 0.001"/>
+    <mesh name="effector" file="effector.stl" scale="0.001 0.001 0.001"/>
+    <mesh name="gripper" file="gripper.stl" scale="0.001 0.001 0.001"/>
+    <mesh name="conveyor_belt" file="conveyor_belt.stl" scale="0.001 0.001 0.001"/>
+    <mesh name="conveyor_frame" file="conveyor_frame.stl" scale="0.001 0.001 0.001"/>
+    <mesh name="puck_small" file="puck_small.stl" scale="0.001 0.001 0.001"/>
+    <mesh name="puck_large" file="puck_large.stl" scale="0.001 0.001 0.001"/>
+    <material name="plate_mat" rgba="0.72 0.74 0.78 1"/>
+    <material name="steel_mat" rgba="0.55 0.58 0.62 1"/>
+    <material name="motor_mat" rgba="0.12 0.13 0.15 1"/>
+    <material name="arm_mat" rgba="0.80 0.82 0.85 1"/>
+    <material name="rod_mat" rgba="0.14 0.15 0.17 1"/>
+    <material name="effector_mat" rgba="0.70 0.72 0.76 1"/>
+    <material name="frame_mat" rgba="0.36 0.38 0.42 1"/>
+    <material name="belt_mat" rgba="0.10 0.11 0.13 1" specular="0.15" shininess="0.2"/>
+    <material name="puck_mat" rgba="0.95 0.52 0.10 1" specular="0.4" shininess="0.5"/>
+  </asset>
+  <worldbody>
+    <light name="key" pos="2.2 -2.4 3.0" dir="-0.55 0.62 -0.72" diffuse="0.85 0.85 0.85" specular="0.3 0.3 0.3" castshadow="true"/>
+    <light name="fill" pos="-2.8 1.6 2.2" dir="0.75 -0.45 -0.6" diffuse="0.35 0.36 0.38" castshadow="false"/>
+    <site name="frame_W_origin" pos="0 0 0" class="frame"/>
+    <geom name="floor" type="plane" size="2 2 0.05"
+      pos="0 0 -1.000000"
+      rgba="0.20 0.21 0.23 1"
+      friction="1 0.005 0.0001"/>
+    <body name="base" pos="0 0 0">
+      <geom type="mesh" mesh="base" class="visual" material="plate_mat"/>
+      <geom name="base_collision" type="cylinder"
+            size="0.250000 0.006000" class="collision"/>
+      <site name="frame_B_origin" pos="0 0 0" class="frame"/>
+      <site name="frame_M0_origin" pos="0.200000 0.000000 0.000000" quat="1.000000000 0.000000000 0.000000000 0.000000000" class="frame"/>
+      <site name="frame_M1_origin" pos="-0.100000 0.173205 0.000000" quat="0.500000000 0.000000000 0.000000000 0.866025404" class="frame"/>
+      <site name="frame_M2_origin" pos="-0.100000 -0.173205 0.000000" quat="-0.500000000 0.000000000 0.000000000 0.866025404" class="frame"/>
+      <geom type="mesh" mesh="motor_mount" pos="0.200000 0.027000 0.000000" quat="1.000000000 0.000000000 0.000000000 0.000000000" class="visual" material="steel_mat"/>
+      <geom type="mesh" mesh="motor" pos="0.200000 0.056000 0.000000" quat="0.707106781 0.000000000 0.000000000 -0.707106781" class="visual" material="motor_mat"/>
+      <geom type="mesh" mesh="motor_mount" pos="-0.123383 0.159705 0.000000" quat="0.500000000 0.000000000 0.000000000 0.866025404" class="visual" material="steel_mat"/>
+      <geom type="mesh" mesh="motor" pos="-0.148497 0.145205 0.000000" quat="0.965925826 0.000000000 0.000000000 0.258819045" class="visual" material="motor_mat"/>
+      <geom type="mesh" mesh="motor_mount" pos="-0.076617 -0.186705 0.000000" quat="-0.500000000 0.000000000 0.000000000 0.866025404" class="visual" material="steel_mat"/>
+      <geom type="mesh" mesh="motor" pos="-0.051503 -0.201205 0.000000" quat="0.258819045 0.000000000 0.000000000 0.965925826" class="visual" material="motor_mat"/>
+
+    <body name="upper_arm_0" pos="0.200000 0.000000 0.000000">
+      <joint name="joint_0" type="hinge" axis="0.000000 -1.000000 0.000000"
+             range="-1.832596 0.785398"
+             damping="0.040000"/>
+      <site name="frame_arm_joint_0" pos="0.400000 0.000000 0.000000"
+            quat="1.000000000 0.000000000 0.000000000 0.000000000" class="frame"/>
+      <inertial pos="0.151779000 -0.000001000 0.000000000" mass="1.153030000" fullinertia="0.000394685 0.025550799 0.025668469 -0.000000071 -0.000000013 -0.000000010"/>
+      <geom type="mesh" mesh="upper_arm" quat="1.000000000 0.000000000 0.000000000 0.000000000" class="visual" material="arm_mat"/>
+      <geom name="upper_arm_col_0" type="capsule"
+            fromto="0 0 0 0.400000 0.000000 0.000000" size="0.018000"
+            class="collision"/>
+      <body name="forearm_0_a" pos="0.400000 0.015000 0.000000">
+        <joint name="ball_0_a" type="ball" damping="0.005000"/>
+        <inertial pos="0.324994000 0.000000000 -0.000000000" mass="0.182570000" fullinertia="0.000005288 0.007021958 0.007021958 -0.000000006 -0.000000002 -0.000000000"/>
+        <geom type="mesh" mesh="forearm" class="visual" material="rod_mat"/>
+        <geom name="forearm_col_0_a" type="capsule"
+              fromto="0 0 0 0.650000 0 0" size="0.007000"
+              class="collision"/>
+        <site name="forearm_tip_0_a" pos="0.650000 0 0" size="0.006"/>
+      </body>
+      <body name="forearm_0_b" pos="0.400000 -0.015000 0.000000">
+        <joint name="ball_0_b" type="ball" damping="0.005000"/>
+        <inertial pos="0.324994000 0.000000000 -0.000000000" mass="0.182570000" fullinertia="0.000005288 0.007021958 0.007021958 -0.000000006 -0.000000002 -0.000000000"/>
+        <geom type="mesh" mesh="forearm" class="visual" material="rod_mat"/>
+        <geom name="forearm_col_0_b" type="capsule"
+              fromto="0 0 0 0.650000 0 0" size="0.007000"
+              class="collision"/>
+        <site name="forearm_tip_0_b" pos="0.650000 0 0" size="0.006"/>
+      </body>
+    </body>
+
+    <body name="upper_arm_1" pos="-0.100000 0.173205 0.000000">
+      <joint name="joint_1" type="hinge" axis="0.866025 0.500000 0.000000"
+             range="-1.832596 0.785398"
+             damping="0.040000"/>
+      <site name="frame_arm_joint_1" pos="-0.200000 0.346410 0.000000"
+            quat="0.500000000 0.000000000 0.000000000 0.866025404" class="frame"/>
+      <inertial pos="-0.075888634 0.131444970 0.000000000" mass="1.153030000" fullinertia="0.019261709 0.006683775 0.025668469 0.010892952 0.000000015 -0.000000006"/>
+      <geom type="mesh" mesh="upper_arm" quat="0.500000000 0.000000000 0.000000000 0.866025404" class="visual" material="arm_mat"/>
+      <geom name="upper_arm_col_1" type="capsule"
+            fromto="0 0 0 -0.200000 0.346410 0.000000" size="0.018000"
+            class="collision"/>
+      <body name="forearm_1_a" pos="-0.212990 0.338910 0.000000">
+        <joint name="ball_1_a" type="ball" damping="0.005000"/>
+        <inertial pos="0.324994000 0.000000000 -0.000000000" mass="0.182570000" fullinertia="0.000005288 0.007021958 0.007021958 -0.000000006 -0.000000002 -0.000000000"/>
+        <geom type="mesh" mesh="forearm" class="visual" material="rod_mat"/>
+        <geom name="forearm_col_1_a" type="capsule"
+              fromto="0 0 0 0.650000 0 0" size="0.007000"
+              class="collision"/>
+        <site name="forearm_tip_1_a" pos="0.650000 0 0" size="0.006"/>
+      </body>
+      <body name="forearm_1_b" pos="-0.187010 0.353910 0.000000">
+        <joint name="ball_1_b" type="ball" damping="0.005000"/>
+        <inertial pos="0.324994000 0.000000000 -0.000000000" mass="0.182570000" fullinertia="0.000005288 0.007021958 0.007021958 -0.000000006 -0.000000002 -0.000000000"/>
+        <geom type="mesh" mesh="forearm" class="visual" material="rod_mat"/>
+        <geom name="forearm_col_1_b" type="capsule"
+              fromto="0 0 0 0.650000 0 0" size="0.007000"
+              class="collision"/>
+        <site name="forearm_tip_1_b" pos="0.650000 0 0" size="0.006"/>
+      </body>
+    </body>
+
+    <body name="upper_arm_2" pos="-0.100000 -0.173205 0.000000">
+      <joint name="joint_2" type="hinge" axis="-0.866025 0.500000 0.000000"
+             range="-1.832596 0.785398"
+             damping="0.040000"/>
+      <site name="frame_arm_joint_2" pos="-0.200000 -0.346410 0.000000"
+            quat="-0.500000000 0.000000000 0.000000000 0.866025404" class="frame"/>
+      <inertial pos="-0.075890366 -0.131443970 0.000000000" mass="1.153030000" fullinertia="0.019261832 0.006683652 0.025668469 -0.010892881 -0.000000002 0.000000016"/>
+      <geom type="mesh" mesh="upper_arm" quat="-0.500000000 0.000000000 0.000000000 0.866025404" class="visual" material="arm_mat"/>
+      <geom name="upper_arm_col_2" type="capsule"
+            fromto="0 0 0 -0.200000 -0.346410 0.000000" size="0.018000"
+            class="collision"/>
+      <body name="forearm_2_a" pos="-0.187010 -0.353910 0.000000">
+        <joint name="ball_2_a" type="ball" damping="0.005000"/>
+        <inertial pos="0.324994000 0.000000000 -0.000000000" mass="0.182570000" fullinertia="0.000005288 0.007021958 0.007021958 -0.000000006 -0.000000002 -0.000000000"/>
+        <geom type="mesh" mesh="forearm" class="visual" material="rod_mat"/>
+        <geom name="forearm_col_2_a" type="capsule"
+              fromto="0 0 0 0.650000 0 0" size="0.007000"
+              class="collision"/>
+        <site name="forearm_tip_2_a" pos="0.650000 0 0" size="0.006"/>
+      </body>
+      <body name="forearm_2_b" pos="-0.212990 -0.338910 0.000000">
+        <joint name="ball_2_b" type="ball" damping="0.005000"/>
+        <inertial pos="0.324994000 0.000000000 -0.000000000" mass="0.182570000" fullinertia="0.000005288 0.007021958 0.007021958 -0.000000006 -0.000000002 -0.000000000"/>
+        <geom type="mesh" mesh="forearm" class="visual" material="rod_mat"/>
+        <geom name="forearm_col_2_b" type="capsule"
+              fromto="0 0 0 0.650000 0 0" size="0.007000"
+              class="collision"/>
+        <site name="forearm_tip_2_b" pos="0.650000 0 0" size="0.006"/>
+      </body>
+    </body>
+    </body>
+
+    <body name="end_effector" pos="0 0 -0.613628">
+      <joint name="ee_x" type="slide" axis="1 0 0" damping="0.01"/>
+      <joint name="ee_y" type="slide" axis="0 1 0" damping="0.01"/>
+      <joint name="ee_z" type="slide" axis="0 0 1" damping="0.01"/>
+      <inertial pos="0.000003000 -0.000000000 -0.000428000" mass="0.459599000" fullinertia="0.000437016 0.000436979 0.000830401 -0.000000000 0.000000008 0.000000000"/>
+      <geom type="mesh" mesh="effector" class="visual" material="effector_mat"/>
+      <geom name="effector_col" type="cylinder"
+            size="0.060000 0.006000" class="collision"/>
+      <site name="ee_anchor_0_a" pos="0.045000 0.015000 0.000000" size="0.005"/>
+      <site name="ee_anchor_0_b" pos="0.045000 -0.015000 0.000000" size="0.005"/>
+      <site name="ee_anchor_1_a" pos="-0.035490 0.031471 0.000000" size="0.005"/>
+      <site name="ee_anchor_1_b" pos="-0.009510 0.046471 0.000000" size="0.005"/>
+      <site name="ee_anchor_2_a" pos="-0.009510 -0.046471 0.000000" size="0.005"/>
+      <site name="ee_anchor_2_b" pos="-0.035490 -0.031471 0.000000" size="0.005"/>
+      <site name="tcp" pos="0 0 0" size="0.008" rgba="1 0.6 0 1"/>
+      <site name="frame_P_origin" pos="0 0 0" class="frame"/>
+      <body name="gripper" pos="0 0 -0.017000">
+        <inertial pos="0.000000000 -0.000000000 -0.024651000" mass="0.994256000" fullinertia="0.001110876 0.000764558 0.001328104 0.000000000 0.000000000 0.000000000"/>
+        <geom type="mesh" mesh="gripper" class="visual" material="steel_mat"/>
+        <geom name="gripper_body_col" type="box"
+              size="0.040000 0.050000 0.022500"
+              pos="0 0 -0.022500" class="collision"/>
+        <geom name="gripper_finger_0_col" type="box"
+              size="0.006000 0.006000 0.027500"
+              pos="0 -0.041000 -0.071500" class="collision"/>
+        <geom name="gripper_finger_1_col" type="box"
+              size="0.006000 0.006000 0.027500"
+              pos="0 0.041000 -0.071500" class="collision"/>
+        <site name="tool_tcp" pos="0 0 -0.099000"
+              size="0.006" rgba="1 0.6 0 1"/>
+        <site name="frame_T_origin" pos="0 0 -0.099000" class="frame"/>
+      </body>
+    </body>
+
+    <body name="conveyor_frame" pos="0.000000 0.000000 -0.800000">
+      <geom type="mesh" mesh="conveyor_frame" class="visual" material="frame_mat"/>
+      <geom name="rail_col_l" type="box" size="0.550000 0.010000 0.025000" pos="0 -0.140000 0.010000" class="collision"/>
+      <geom name="rail_col_r" type="box" size="0.550000 0.010000 0.025000" pos="0 0.140000 0.010000" class="collision"/>
+      <geom name="leg_col_0_0" type="box" size="0.015000 0.015000 0.093500" pos="-0.470000 -0.140000 -0.106500" class="collision"/>
+      <geom name="leg_col_0_1" type="box" size="0.015000 0.015000 0.093500" pos="-0.470000 0.140000 -0.106500" class="collision"/>
+      <geom name="leg_col_1_0" type="box" size="0.015000 0.015000 0.093500" pos="0.470000 -0.140000 -0.106500" class="collision"/>
+      <geom name="leg_col_1_1" type="box" size="0.015000 0.015000 0.093500" pos="0.470000 0.140000 -0.106500" class="collision"/>
+    </body>
+
+    <body name="conveyor_belt" pos="0.000000 0.000000 -0.800000">
+      <joint name="belt_slide" type="slide" axis="1 0 0" damping="0"/>
+      <inertial pos="0.000000000 0.000000000 0.000000000" mass="8.712000000" fullinertia="0.042471000 0.879113400 0.920277600 -0.000000000 -0.000000000 -0.000000000"/>
+      <geom type="mesh" mesh="conveyor_belt" class="visual" material="belt_mat"/>
+      <geom name="belt_surface" type="box"
+            size="0.550000 0.120000 0.015000"
+            friction="2.000000 0.005000 0.000100" class="collision"/>
+    </body>
+
+    <body name="puck_small" pos="-0.400000 0.000000 -0.769500">
+      <freejoint name="puck_small_free"/>
+      <inertial pos="-0.000000000 -0.000000000 0.000000000" mass="0.056511000" fullinertia="0.000011070 0.000011070 0.000013663 0.000000000 0.000000000 -0.000000000"/>
+      <geom type="mesh" mesh="puck_small" class="visual" material="puck_mat"/>
+      <geom name="puck_small_col" type="cylinder"
+            size="0.022000 0.015000"
+            friction="1.000000 0.005000 0.000100" class="collision"/>
+      <site name="frame_puck_small_origin" class="frame"/>
+    </body>
+
+    <body name="puck_large" pos="-0.200000 0.000000 -0.762000">
+      <freejoint name="puck_large_free"/>
+      <inertial pos="0.000000000 0.000000000 0.000000000" mass="0.157624000" fullinertia="0.000062031 0.000062031 0.000070865 0.000000000 0.000000000 -0.000000000"/>
+      <geom type="mesh" mesh="puck_large" class="visual" material="puck_mat"/>
+      <geom name="puck_large_col" type="cylinder"
+            size="0.030000 0.022500"
+            friction="1.000000 0.005000 0.000100" class="collision"/>
+      <site name="frame_puck_large_origin" class="frame"/>
+    </body>
+  </worldbody>
+  <equality>
+    <connect name="connect_0_a" site1="forearm_tip_0_a" site2="ee_anchor_0_a" solref="0.002 1"/>
+    <connect name="connect_0_b" site1="forearm_tip_0_b" site2="ee_anchor_0_b" solref="0.002 1"/>
+    <connect name="connect_1_a" site1="forearm_tip_1_a" site2="ee_anchor_1_a" solref="0.002 1"/>
+    <connect name="connect_1_b" site1="forearm_tip_1_b" site2="ee_anchor_1_b" solref="0.002 1"/>
+    <connect name="connect_2_a" site1="forearm_tip_2_a" site2="ee_anchor_2_a" solref="0.002 1"/>
+    <connect name="connect_2_b" site1="forearm_tip_2_b" site2="ee_anchor_2_b" solref="0.002 1"/>
+  </equality>
+  <contact>
+    <exclude body1="base" body2="upper_arm_0"/>
+    <exclude body1="upper_arm_0" body2="forearm_0_a"/>
+    <exclude body1="forearm_0_a" body2="end_effector"/>
+    <exclude body1="upper_arm_0" body2="forearm_0_b"/>
+    <exclude body1="forearm_0_b" body2="end_effector"/>
+    <exclude body1="base" body2="upper_arm_1"/>
+    <exclude body1="upper_arm_1" body2="forearm_1_a"/>
+    <exclude body1="forearm_1_a" body2="end_effector"/>
+    <exclude body1="upper_arm_1" body2="forearm_1_b"/>
+    <exclude body1="forearm_1_b" body2="end_effector"/>
+    <exclude body1="base" body2="upper_arm_2"/>
+    <exclude body1="upper_arm_2" body2="forearm_2_a"/>
+    <exclude body1="forearm_2_a" body2="end_effector"/>
+    <exclude body1="upper_arm_2" body2="forearm_2_b"/>
+    <exclude body1="forearm_2_b" body2="end_effector"/>
+    <exclude body1="forearm_0_a" body2="forearm_0_b"/>
+    <exclude body1="forearm_0_a" body2="forearm_1_a"/>
+    <exclude body1="forearm_0_a" body2="forearm_1_b"/>
+    <exclude body1="forearm_0_a" body2="forearm_2_a"/>
+    <exclude body1="forearm_0_a" body2="forearm_2_b"/>
+    <exclude body1="forearm_0_b" body2="forearm_1_a"/>
+    <exclude body1="forearm_0_b" body2="forearm_1_b"/>
+    <exclude body1="forearm_0_b" body2="forearm_2_a"/>
+    <exclude body1="forearm_0_b" body2="forearm_2_b"/>
+    <exclude body1="forearm_1_a" body2="forearm_1_b"/>
+    <exclude body1="forearm_1_a" body2="forearm_2_a"/>
+    <exclude body1="forearm_1_a" body2="forearm_2_b"/>
+    <exclude body1="forearm_1_b" body2="forearm_2_a"/>
+    <exclude body1="forearm_1_b" body2="forearm_2_b"/>
+    <exclude body1="forearm_2_a" body2="forearm_2_b"/>
+    <exclude body1="end_effector" body2="conveyor_belt"/>
+    <exclude body1="end_effector" body2="conveyor_frame"/>
+    <exclude body1="gripper" body2="conveyor_belt"/>
+    <exclude body1="gripper" body2="conveyor_frame"/>
+    <exclude body1="end_effector" body2="puck_small"/>
+    <exclude body1="end_effector" body2="puck_large"/>
+  </contact>
+  <actuator>
+    <motor name="motor_0" joint="joint_0" gear="1" ctrlrange="-150.000000 150.000000"/>
+    <motor name="motor_1" joint="joint_1" gear="1" ctrlrange="-150.000000 150.000000"/>
+    <motor name="motor_2" joint="joint_2" gear="1" ctrlrange="-150.000000 150.000000"/>
+    <velocity name="belt_velocity" joint="belt_slide" kv="2000" ctrlrange="-2 2"/>
+  </actuator>
+  <keyframe>
+    <key name="home" qpos="-0.523598776 0.570141774 0.000000000 0.821546321 0.000000000 0.570141774 0.000000000 0.821546321 0.000000000 -0.523598776 0.754546874 0.134640977 0.566889150 -0.301939586 0.754546874 0.134640977 0.566889150 -0.301939586 -0.523598776 0.754546874 -0.134640977 0.566889150 0.301939586 0.754546874 -0.134640977 0.566889150 0.301939586 0.000000000 0.000000000 0.000000000 0.000000000 -0.400000000 0.000000000 -0.769500000 1.000000000 0.000000000 0.000000000 0.000000000 -0.200000000 0.000000000 -0.762000000 1.000000000 0.000000000 0.000000000 0.000000000"/>
+  </keyframe>
+</mujoco>

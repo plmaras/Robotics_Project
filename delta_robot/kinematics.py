@@ -105,7 +105,6 @@ def inverse_kinematics(
 
 def forward_kinematics(thetas: np.ndarray, params: DeltaParams) -> Optional[np.ndarray]:
     """Analytical closed-form Forward Kinematics: joint angles -> effector position.
-
     Intersects three spheres of radius L centered at the elbow joints
     (offset by the effector radius) and returns the lower physical solution (z < 0).
     """

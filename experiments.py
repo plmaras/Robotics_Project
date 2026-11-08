@@ -1,10 +1,8 @@
 """Benchmark Experiments comparing PD and Computed-Torque Control (CTC).
-
 Runs three rigorous robotics experiments:
   1. Nominal Experiment: Standard belt velocity, low sensor noise, nominal dynamics.
   2. Faster Target with Noisy Position: Fast belt speed, high sensor noise, Alpha-Beta filter.
   3. Added Obstacle and Payload: 3D obstacle avoidance via RRT planner, payload mass uncertainty.
-
 Evaluates and compares:
   - Trajectory tracking error (RMSE and Max Error)
   - Interception success rate (%)
@@ -24,11 +22,8 @@ import delta_robot as dr
 
 
 def run_trial(
-    exp_num: int,
-    ctrl_type: str,  # 'PD' or 'CTC'
-    seed: int = 42,
-    verbose: bool = False,
-) -> Dict[str, Any]:
+    exp_num: int,ctrl_type: str,  # 'PD' or 'CTC'
+seed: int = 42,verbose: bool = False,) -> Dict[str, Any]:
     """Execute a single simulation trial for a specific experiment and controller."""
     params = dr.DeltaParams()
     dt = 0.002

@@ -1,0 +1,162 @@
+{
+  "version": 2,
+  "units": "mm",
+  "materials_kg_m3": {
+    "aluminium_6061": 2700,
+    "steel": 7850,
+    "carbon_fibre": 1600,
+    "rubber": 1100,
+    "pla": 1240
+  },
+  "scene": {
+    "floor_z_m": -1.0,
+    "gravity_m_s2": 9.81,
+    "timestep_s": 0.002,
+    "integrator": "implicitfast",
+    "object_gap_m": 0.0005
+  },
+  "delta": {
+    "leg_angles_deg": [0.0, 120.0, 240.0],
+    "home_theta_deg": -30.0,
+    "theta_min_deg": -105.0,
+    "theta_max_deg": 45.0,
+    "joint_damping": 0.04,
+    "ball_damping": 0.005,
+    "motor_torque_limit": 150.0,
+    "pd_kp": 400.0,
+    "pd_kd": 40.0,
+    "base_radius": 200.0,
+    "effector_radius": 45.0,
+    "upper_arm_length": 400.0,
+    "forearm_length": 650.0,
+    "base": {
+      "outer_radius": 250.0,
+      "thickness": 12.0,
+      "center_hole_radius": 40.0,
+      "hub_radius": 85.0,
+      "hub_height": 40.0,
+      "hub_z": 6.0,
+      "top_flange_radius": 120.0,
+      "top_flange_thickness": 8.0,
+      "bolt_circle_radius": 95.0,
+      "bolt_hole_radius": 6.0,
+      "bolt_count": 6,
+      "spoke_start": 70.0,
+      "spoke_end": 190.0,
+      "spoke_inner_width": 55.0,
+      "spoke_outer_width": 60.0,
+      "spoke_height": 22.0,
+      "spoke_corner_radius": 6.0,
+      "material": "aluminium_6061"
+    },
+    "motor": {
+      "body_radius": 30.0,
+      "body_length": 60.0,
+      "flange_radius": 36.0,
+      "flange_thickness": 6.0,
+      "cap_radius": 27.0,
+      "cap_thickness": 8.0,
+      "shaft_radius": 8.0,
+      "shaft_length": 25.0,
+      "tangent_offset": 56.0,
+      "material": "steel"
+    },
+    "motor_mount": {
+      "offset": 27.0,
+      "outer_radius": 52.0,
+      "shaft_hole_radius": 12.0,
+      "thickness": 6.0,
+      "bolt_circle_radius": 42.0,
+      "bolt_hole_radius": 4.0,
+      "bolt_count": 4,
+      "material": "aluminium_6061"
+    },
+    "upper_arm": {
+      "width": 56.0,
+      "elbow_width": 40.0,
+      "thickness": 16.0,
+      "corner_radius": 6.0,
+      "hinge_boss_radius": 30.0,
+      "hinge_boss_width": 60.0,
+      "hinge_bore_radius": 11.0,
+      "elbow_boss_radius": 24.0,
+      "elbow_boss_width": 38.0,
+      "elbow_socket_radius": 12.0,
+      "lightening_hole_radius": 16.0,
+      "lightening_hole_x": [130.0, 260.0],
+      "blade_end_inset": 20.0,
+      "collision_radius": 18.0,
+      "material": "aluminium_6061"
+    },
+    "forearm": {
+      "rod_radius": 7.0,
+      "end_ball_radius": 11.0,
+      "pair_offset": 15.0,
+      "collar_radius": 9.0,
+      "collar_length": 60.0,
+      "material": "carbon_fibre"
+    },
+    "effector": {
+      "plate_radius": 60.0,
+      "plate_thickness": 12.0,
+      "anchor_lug_radius": 13.0,
+      "anchor_lug_height": 14.0,
+      "anchor_socket_radius": 12.0,
+      "center_hole_radius": 15.0,
+      "lightening_hole_radius": 10.0,
+      "lightening_hole_ring_radius": 32.0,
+      "tool_flange_radius": 32.0,
+      "tool_flange_thickness": 12.0,
+      "tool_flange_bore_radius": 12.0,
+      "tool_bolt_circle_radius": 22.0,
+      "tool_bolt_radius": 4.0,
+      "material": "aluminium_6061"
+    },
+    "gripper": {
+      "body_length": 80.0,
+      "body_width": 100.0,
+      "body_height": 45.0,
+      "body_corner_radius": 14.0,
+      "finger_width": 12.0,
+      "finger_thickness": 12.0,
+      "finger_length": 55.0,
+      "opening": 70.0,
+      "material": "aluminium_6061"
+    }
+  },
+  "conveyor": {
+    "length": 1100.0,
+    "belt_width": 240.0,
+    "belt_thickness": 30.0,
+    "rail_width": 20.0,
+    "rail_height": 50.0,
+    "rail_gap": 10.0,
+    "leg_size": 30.0,
+    "leg_inset_x": 80.0,
+    "floor_drop": 200.0,
+    "world_position_mm": [0.0, 0.0, -800.0],
+    "belt_speed_m_s": 0.3,
+    "belt_friction": [2.0, 0.005, 0.0001],
+    "object_friction": [1.0, 0.005, 0.0001],
+    "belt_material": "rubber",
+    "frame_material": "steel"
+  },
+  "objects": [
+    {
+      "name": "puck_small",
+      "radius": 22.0,
+      "height": 30.0,
+      "material": "pla",
+      "spawn_x_mm": -400.0,
+      "spawn_y_mm": 0.0
+    },
+    {
+      "name": "puck_large",
+      "radius": 30.0,
+      "height": 45.0,
+      "material": "pla",
+      "spawn_x_mm": -200.0,
+      "spawn_y_mm": 0.0
+    }
+  ]
+}

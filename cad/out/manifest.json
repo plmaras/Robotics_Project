@@ -1,0 +1,1039 @@
+{
+  "version": 1,
+  "generated_by": "cad/build_cad.py",
+  "source_config": "/Users/ramaraogolla/Documents/Courses/Sem5/Robotics/Project/Robotics_Project/cad/config.json",
+  "units": {
+    "cad": "mm",
+    "mjcf": "m"
+  },
+  "home_pose": {
+    "theta_deg": -30.0,
+    "effector_z_m": -0.613628
+  },
+  "parts": [
+    {
+      "name": "base",
+      "group": "delta",
+      "material": "aluminium_6061",
+      "density_kg_m3": 2700.0,
+      "frame": "origin at base plate mid-plane; +Z up; motor bores on leg azimuths",
+      "files": {
+        "stl": "stl/base.stl",
+        "step": "step/base.step"
+      },
+      "watertight": true,
+      "volume_m3": 0.003278251,
+      "mass_kg": 8.851278,
+      "com_local_m": [
+        -0.0,
+        -0.0,
+        0.00387
+      ],
+      "inertia_local_kg_m2": [
+        [
+          0.114517454,
+          -1.6e-08,
+          6e-09
+        ],
+        [
+          -1.6e-08,
+          0.114517434,
+          6e-09
+        ],
+        [
+          6e-09,
+          6e-09,
+          0.227652379
+        ]
+      ],
+      "mjcf": {
+        "mesh": "stl/base.stl",
+        "scale": [
+          0.001,
+          0.001,
+          0.001
+        ],
+        "inertial": {
+          "pos": [
+            -0.0,
+            -0.0,
+            0.00387
+          ],
+          "mass": 8.851278,
+          "fullinertia": [
+            0.114517454,
+            0.114517434,
+            0.227652379,
+            -1.6e-08,
+            6e-09,
+            6e-09
+          ]
+        }
+      },
+      "instances": [
+        {
+          "body": "base",
+          "parent": "world",
+          "pos_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mesh_quat_wxyz": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      ]
+    },
+    {
+      "name": "motor_mount",
+      "group": "delta",
+      "material": "aluminium_6061",
+      "density_kg_m3": 2700.0,
+      "frame": "disk centre at origin; bolt axis +Y",
+      "files": {
+        "stl": "stl/motor_mount.stl",
+        "step": "step/motor_mount.step"
+      },
+      "watertight": true,
+      "volume_m3": 4.70046e-05,
+      "mass_kg": 0.126913,
+      "com_local_m": [
+        0.0,
+        -0.0,
+        -0.0
+      ],
+      "inertia_local_kg_m2": [
+        [
+          9.009e-05,
+          -0.0,
+          0.0
+        ],
+        [
+          -0.0,
+          0.000179418,
+          -0.0
+        ],
+        [
+          0.0,
+          -0.0,
+          9.009e-05
+        ]
+      ],
+      "mjcf": {
+        "mesh": "stl/motor_mount.stl",
+        "scale": [
+          0.001,
+          0.001,
+          0.001
+        ],
+        "inertial": {
+          "pos": [
+            0.0,
+            -0.0,
+            -0.0
+          ],
+          "mass": 0.126913,
+          "fullinertia": [
+            9.009e-05,
+            0.000179418,
+            9.009e-05,
+            -0.0,
+            0.0,
+            -0.0
+          ]
+        }
+      },
+      "instances": [
+        {
+          "body": "motor_mount_0",
+          "parent": "base",
+          "pos_m": [
+            0.2,
+            0.027,
+            0.0
+          ],
+          "mesh_quat_wxyz": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "note": "mount disk under the arm hinge, outboard of the motor"
+        },
+        {
+          "body": "motor_mount_1",
+          "parent": "base",
+          "pos_m": [
+            -0.123383,
+            0.159705,
+            0.0
+          ],
+          "mesh_quat_wxyz": [
+            0.5000000000000001,
+            0.0,
+            0.0,
+            0.8660254037844386
+          ],
+          "note": "mount disk under the arm hinge, outboard of the motor"
+        },
+        {
+          "body": "motor_mount_2",
+          "parent": "base",
+          "pos_m": [
+            -0.076617,
+            -0.186705,
+            0.0
+          ],
+          "mesh_quat_wxyz": [
+            -0.49999999999999983,
+            0.0,
+            0.0,
+            0.8660254037844387
+          ],
+          "note": "mount disk under the arm hinge, outboard of the motor"
+        }
+      ]
+    },
+    {
+      "name": "motor",
+      "group": "delta",
+      "material": "steel",
+      "density_kg_m3": 7850.0,
+      "frame": "origin at motor centre; shaft axis +X",
+      "files": {
+        "stl": "stl/motor.stl",
+        "step": "step/motor.step"
+      },
+      "watertight": true,
+      "volume_m3": 0.000197717,
+      "mass_kg": 1.552078,
+      "com_local_m": [
+        8.6e-05,
+        -0.0,
+        0.0
+      ],
+      "inertia_local_kg_m2": [
+        [
+          0.000712649,
+          -0.0,
+          -0.0
+        ],
+        [
+          -0.0,
+          0.00099809,
+          -0.0
+        ],
+        [
+          -0.0,
+          -0.0,
+          0.00099809
+        ]
+      ],
+      "mjcf": {
+        "mesh": "stl/motor.stl",
+        "scale": [
+          0.001,
+          0.001,
+          0.001
+        ],
+        "inertial": {
+          "pos": [
+            8.6e-05,
+            -0.0,
+            0.0
+          ],
+          "mass": 1.552078,
+          "fullinertia": [
+            0.000712649,
+            0.00099809,
+            0.00099809,
+            -0.0,
+            -0.0,
+            -0.0
+          ]
+        }
+      },
+      "instances": [
+        {
+          "body": "motor_0",
+          "parent": "base",
+          "pos_m": [
+            0.2,
+            0.056,
+            0.0
+          ],
+          "mesh_quat_wxyz": [
+            0.7071067811865476,
+            0.0,
+            0.0,
+            -0.7071067811865475
+          ],
+          "note": "shaft points along the leg tangential axis into the hinge"
+        },
+        {
+          "body": "motor_1",
+          "parent": "base",
+          "pos_m": [
+            -0.148497,
+            0.145205,
+            0.0
+          ],
+          "mesh_quat_wxyz": [
+            0.9659258262890683,
+            0.0,
+            0.0,
+            0.25881904510252074
+          ],
+          "note": "shaft points along the leg tangential axis into the hinge"
+        },
+        {
+          "body": "motor_2",
+          "parent": "base",
+          "pos_m": [
+            -0.051503,
+            -0.201205,
+            0.0
+          ],
+          "mesh_quat_wxyz": [
+            0.25881904510252074,
+            0.0,
+            0.0,
+            0.9659258262890683
+          ],
+          "note": "shaft points along the leg tangential axis into the hinge"
+        }
+      ]
+    },
+    {
+      "name": "upper_arm",
+      "group": "delta",
+      "material": "aluminium_6061",
+      "density_kg_m3": 2700.0,
+      "frame": "hinge centre at origin; link along +X; thickness along Z",
+      "files": {
+        "stl": "stl/upper_arm.stl",
+        "step": "step/upper_arm.step"
+      },
+      "watertight": true,
+      "volume_m3": 0.0004270482,
+      "mass_kg": 1.15303,
+      "com_local_m": [
+        0.151779,
+        -1e-06,
+        0.0
+      ],
+      "inertia_local_kg_m2": [
+        [
+          0.000394685,
+          -7.1e-08,
+          -1.3e-08
+        ],
+        [
+          -7.1e-08,
+          0.025550799,
+          -1e-08
+        ],
+        [
+          -1.3e-08,
+          -1e-08,
+          0.025668469
+        ]
+      ],
+      "mjcf": {
+        "mesh": "stl/upper_arm.stl",
+        "scale": [
+          0.001,
+          0.001,
+          0.001
+        ],
+        "inertial": {
+          "pos": [
+            0.151779,
+            -1e-06,
+            0.0
+          ],
+          "mass": 1.15303,
+          "fullinertia": [
+            0.000394685,
+            0.025550799,
+            0.025668469,
+            -7.1e-08,
+            -1.3e-08,
+            -1e-08
+          ]
+        }
+      },
+      "instances": [
+        {
+          "body": "upper_arm_0",
+          "parent": "base",
+          "pos_m": [
+            0.2,
+            0.0,
+            0.0
+          ],
+          "mesh_quat_wxyz": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "body": "upper_arm_1",
+          "parent": "base",
+          "pos_m": [
+            -0.1,
+            0.173205,
+            0.0
+          ],
+          "mesh_quat_wxyz": [
+            0.5000000000000001,
+            0.0,
+            0.0,
+            0.8660254037844386
+          ]
+        },
+        {
+          "body": "upper_arm_2",
+          "parent": "base",
+          "pos_m": [
+            -0.1,
+            -0.173205,
+            0.0
+          ],
+          "mesh_quat_wxyz": [
+            -0.49999999999999983,
+            0.0,
+            0.0,
+            0.8660254037844387
+          ]
+        }
+      ]
+    },
+    {
+      "name": "forearm",
+      "group": "delta",
+      "material": "carbon_fibre",
+      "density_kg_m3": 1600.0,
+      "frame": "ball-joint centre at origin; rod along +X",
+      "files": {
+        "stl": "stl/forearm.stl",
+        "step": "step/forearm.step"
+      },
+      "watertight": true,
+      "volume_m3": 0.0001141062,
+      "mass_kg": 0.18257,
+      "com_local_m": [
+        0.324994,
+        0.0,
+        -0.0
+      ],
+      "inertia_local_kg_m2": [
+        [
+          5.288e-06,
+          -6e-09,
+          -2e-09
+        ],
+        [
+          -6e-09,
+          0.007021958,
+          -0.0
+        ],
+        [
+          -2e-09,
+          -0.0,
+          0.007021958
+        ]
+      ],
+      "mjcf": {
+        "mesh": "stl/forearm.stl",
+        "scale": [
+          0.001,
+          0.001,
+          0.001
+        ],
+        "inertial": {
+          "pos": [
+            0.324994,
+            0.0,
+            -0.0
+          ],
+          "mass": 0.18257,
+          "fullinertia": [
+            5.288e-06,
+            0.007021958,
+            0.007021958,
+            -6e-09,
+            -2e-09,
+            -0.0
+          ]
+        }
+      },
+      "instances": [
+        {
+          "body": "forearm_0_a",
+          "parent": "upper_arm_0",
+          "pos_m": [
+            0.4,
+            0.015,
+            0.0
+          ],
+          "mesh_quat_wxyz": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "note": "paired rod; orientation set by ball joint and connect constraint"
+        },
+        {
+          "body": "forearm_0_b",
+          "parent": "upper_arm_0",
+          "pos_m": [
+            0.4,
+            -0.015,
+            0.0
+          ],
+          "mesh_quat_wxyz": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "note": "paired rod; orientation set by ball joint and connect constraint"
+        },
+        {
+          "body": "forearm_1_a",
+          "parent": "upper_arm_1",
+          "pos_m": [
+            0.4,
+            0.015,
+            0.0
+          ],
+          "mesh_quat_wxyz": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "note": "paired rod; orientation set by ball joint and connect constraint"
+        },
+        {
+          "body": "forearm_1_b",
+          "parent": "upper_arm_1",
+          "pos_m": [
+            0.4,
+            -0.015,
+            0.0
+          ],
+          "mesh_quat_wxyz": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "note": "paired rod; orientation set by ball joint and connect constraint"
+        },
+        {
+          "body": "forearm_2_a",
+          "parent": "upper_arm_2",
+          "pos_m": [
+            0.4,
+            0.015,
+            0.0
+          ],
+          "mesh_quat_wxyz": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "note": "paired rod; orientation set by ball joint and connect constraint"
+        },
+        {
+          "body": "forearm_2_b",
+          "parent": "upper_arm_2",
+          "pos_m": [
+            0.4,
+            -0.015,
+            0.0
+          ],
+          "mesh_quat_wxyz": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "note": "paired rod; orientation set by ball joint and connect constraint"
+        }
+      ]
+    },
+    {
+      "name": "effector",
+      "group": "delta",
+      "material": "aluminium_6061",
+      "density_kg_m3": 2700.0,
+      "frame": "plate centre at origin; ball anchors at radius effector_radius, z=0",
+      "files": {
+        "stl": "stl/effector.stl",
+        "step": "step/effector.step"
+      },
+      "watertight": true,
+      "volume_m3": 0.000170222,
+      "mass_kg": 0.459599,
+      "com_local_m": [
+        3e-06,
+        -0.0,
+        -0.000428
+      ],
+      "inertia_local_kg_m2": [
+        [
+          0.000437016,
+          -0.0,
+          8e-09
+        ],
+        [
+          -0.0,
+          0.000436979,
+          0.0
+        ],
+        [
+          8e-09,
+          0.0,
+          0.000830401
+        ]
+      ],
+      "mjcf": {
+        "mesh": "stl/effector.stl",
+        "scale": [
+          0.001,
+          0.001,
+          0.001
+        ],
+        "inertial": {
+          "pos": [
+            3e-06,
+            -0.0,
+            -0.000428
+          ],
+          "mass": 0.459599,
+          "fullinertia": [
+            0.000437016,
+            0.000436979,
+            0.000830401,
+            -0.0,
+            8e-09,
+            0.0
+          ]
+        }
+      },
+      "instances": [
+        {
+          "body": "end_effector",
+          "parent": "world",
+          "pos_m": [
+            0.0,
+            0.0,
+            -0.613628
+          ],
+          "mesh_quat_wxyz": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      ]
+    },
+    {
+      "name": "gripper",
+      "group": "delta",
+      "material": "aluminium_6061",
+      "density_kg_m3": 2700.0,
+      "frame": "mount face at origin; body extends -Z; fingers open along Y",
+      "files": {
+        "stl": "stl/gripper.stl",
+        "step": "step/gripper.step"
+      },
+      "watertight": true,
+      "volume_m3": 0.000368243,
+      "mass_kg": 0.994256,
+      "com_local_m": [
+        0.0,
+        -0.0,
+        -0.024651
+      ],
+      "inertia_local_kg_m2": [
+        [
+          0.001110876,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.000764558,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.001328104
+        ]
+      ],
+      "mjcf": {
+        "mesh": "stl/gripper.stl",
+        "scale": [
+          0.001,
+          0.001,
+          0.001
+        ],
+        "inertial": {
+          "pos": [
+            0.0,
+            -0.0,
+            -0.024651
+          ],
+          "mass": 0.994256,
+          "fullinertia": [
+            0.001110876,
+            0.000764558,
+            0.001328104,
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "instances": [
+        {
+          "body": "gripper",
+          "parent": "end_effector",
+          "pos_m": [
+            0.0,
+            0.0,
+            -0.017
+          ],
+          "mesh_quat_wxyz": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      ]
+    },
+    {
+      "name": "conveyor_belt",
+      "group": "conveyor",
+      "material": "rubber",
+      "density_kg_m3": 1100.0,
+      "frame": "belt centre at origin; +X along travel; +Z up",
+      "files": {
+        "stl": "stl/conveyor_belt.stl",
+        "step": "step/conveyor_belt.step"
+      },
+      "watertight": true,
+      "volume_m3": 0.00792,
+      "mass_kg": 8.712,
+      "com_local_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "inertia_local_kg_m2": [
+        [
+          0.042471,
+          -0.0,
+          -0.0
+        ],
+        [
+          -0.0,
+          0.8791134,
+          -0.0
+        ],
+        [
+          -0.0,
+          -0.0,
+          0.9202776
+        ]
+      ],
+      "mjcf": {
+        "mesh": "stl/conveyor_belt.stl",
+        "scale": [
+          0.001,
+          0.001,
+          0.001
+        ],
+        "inertial": {
+          "pos": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mass": 8.712,
+          "fullinertia": [
+            0.042471,
+            0.8791134,
+            0.9202776,
+            -0.0,
+            -0.0,
+            -0.0
+          ]
+        }
+      },
+      "instances": [
+        {
+          "body": "conveyor_belt",
+          "parent": "world",
+          "pos_m": [
+            0.0,
+            0.0,
+            -0.8
+          ],
+          "mesh_quat_wxyz": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      ]
+    },
+    {
+      "name": "conveyor_frame",
+      "group": "conveyor",
+      "material": "steel",
+      "density_kg_m3": 7850.0,
+      "frame": "belt centre at origin; +X along travel; +Z up",
+      "files": {
+        "stl": "stl/conveyor_frame.stl",
+        "step": "step/conveyor_frame.step"
+      },
+      "watertight": true,
+      "volume_m3": 0.0028684,
+      "mass_kg": 22.51694,
+      "com_local_m": [
+        0.0,
+        -0.0,
+        -0.017302
+      ],
+      "inertia_local_kg_m2": [
+        [
+          0.516219075,
+          -0.0,
+          -0.0
+        ],
+        [
+          -0.0,
+          2.974750527,
+          0.0
+        ],
+        [
+          -0.0,
+          0.0,
+          3.343137014
+        ]
+      ],
+      "mjcf": {
+        "mesh": "stl/conveyor_frame.stl",
+        "scale": [
+          0.001,
+          0.001,
+          0.001
+        ],
+        "inertial": {
+          "pos": [
+            0.0,
+            -0.0,
+            -0.017302
+          ],
+          "mass": 22.51694,
+          "fullinertia": [
+            0.516219075,
+            2.974750527,
+            3.343137014,
+            -0.0,
+            -0.0,
+            0.0
+          ]
+        }
+      },
+      "instances": [
+        {
+          "body": "conveyor_frame",
+          "parent": "world",
+          "pos_m": [
+            0.0,
+            0.0,
+            -0.8
+          ],
+          "mesh_quat_wxyz": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      ]
+    },
+    {
+      "name": "puck_small",
+      "group": "objects",
+      "material": "pla",
+      "density_kg_m3": 1240.0,
+      "frame": "centre at origin; axis +Z",
+      "files": {
+        "stl": "stl/puck_small.stl",
+        "step": "step/puck_small.step"
+      },
+      "watertight": true,
+      "volume_m3": 4.55734e-05,
+      "mass_kg": 0.056511,
+      "com_local_m": [
+        -0.0,
+        -0.0,
+        0.0
+      ],
+      "inertia_local_kg_m2": [
+        [
+          1.107e-05,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.107e-05,
+          -0.0
+        ],
+        [
+          0.0,
+          -0.0,
+          1.3663e-05
+        ]
+      ],
+      "mjcf": {
+        "mesh": "stl/puck_small.stl",
+        "scale": [
+          0.001,
+          0.001,
+          0.001
+        ],
+        "inertial": {
+          "pos": [
+            -0.0,
+            -0.0,
+            0.0
+          ],
+          "mass": 0.056511,
+          "fullinertia": [
+            1.107e-05,
+            1.107e-05,
+            1.3663e-05,
+            0.0,
+            0.0,
+            -0.0
+          ]
+        }
+      },
+      "instances": [
+        {
+          "body": "puck_small",
+          "parent": "world",
+          "pos_m": [
+            -0.4,
+            0.0,
+            -0.77
+          ],
+          "mesh_quat_wxyz": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      ]
+    },
+    {
+      "name": "puck_large",
+      "group": "objects",
+      "material": "pla",
+      "density_kg_m3": 1240.0,
+      "frame": "centre at origin; axis +Z",
+      "files": {
+        "stl": "stl/puck_large.stl",
+        "step": "step/puck_large.step"
+      },
+      "watertight": true,
+      "volume_m3": 0.0001271159,
+      "mass_kg": 0.157624,
+      "com_local_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "inertia_local_kg_m2": [
+        [
+          6.2031e-05,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          6.2031e-05,
+          -0.0
+        ],
+        [
+          0.0,
+          -0.0,
+          7.0865e-05
+        ]
+      ],
+      "mjcf": {
+        "mesh": "stl/puck_large.stl",
+        "scale": [
+          0.001,
+          0.001,
+          0.001
+        ],
+        "inertial": {
+          "pos": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mass": 0.157624,
+          "fullinertia": [
+            6.2031e-05,
+            6.2031e-05,
+            7.0865e-05,
+            0.0,
+            0.0,
+            -0.0
+          ]
+        }
+      },
+      "instances": [
+        {
+          "body": "puck_large",
+          "parent": "world",
+          "pos_m": [
+            -0.2,
+            0.0,
+            -0.7625
+          ],
+          "mesh_quat_wxyz": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      ]
+    }
+  ]
+}
